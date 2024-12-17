@@ -1,4 +1,4 @@
-# Copyright (c) 2023, NVIDIA Corporation
+ # Copyright (c) 2023, NVIDIA Corporation
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -81,6 +81,10 @@ class IndustRealTaskPegsInsert(IndustRealEnvPegs, FactoryABCTask):
 
         self._acquire_task_tensors()
         self.parse_controller_spec()
+        
+        # variables for print insertion_success
+        self.sum_succ = 0.0  
+        self.succ_cnt = 0
 
         # Get Warp mesh objects for SAPU and SDF-based reward
         wp.init()
@@ -442,6 +446,7 @@ class IndustRealTaskPegsInsert(IndustRealEnvPegs, FactoryABCTask):
             )
 
             # Success bonus: Log success rate, ignoring environments with large interpenetration
+            # add print success rate in terminal board
             if len(high_interpen_envs) > 0:
                 is_plug_inserted_in_socket_low_interpen = is_plug_inserted_in_socket[
                     low_interpen_envs
@@ -449,10 +454,20 @@ class IndustRealTaskPegsInsert(IndustRealEnvPegs, FactoryABCTask):
                 self.extras["insertion_successes"] = torch.mean(
                     is_plug_inserted_in_socket_low_interpen.float()
                 )
+                # added for print 1
+                print(f'insertion_success: {self.extras["insertion_successes"]}')
+                self.sum_succ+=self.extras["insertion_successes"]
+                self.succ_cnt+=1
+                print(f'average_insert_success: {self.sum_succ/self.succ_cnt}')
             else:
                 self.extras["insertion_successes"] = torch.mean(
                     is_plug_inserted_in_socket.float()
                 )
+                # added for print 2   
+                print(f'insertion_success: {self.extras["insertion_successes"]}')
+                self.sum_succ+=self.extras["insertion_successes"]
+                self.succ_cnt+=1
+                print(f'average_insert_success: {self.sum_succ/self.succ_cnt}')
 
             # SBC: Compute reward scale based on curriculum difficulty
             sbc_rew_scale = algo_utils.get_curriculum_reward_scale(

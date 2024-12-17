@@ -186,10 +186,20 @@ def get_sapu_reward_scale(
     low_interpen_envs = torch.nonzero(max_interpen_dists <= interpen_thresh)
     high_interpen_envs = torch.nonzero(max_interpen_dists > interpen_thresh)
 
+    """Evaluation of Non-Linear Reward Scaling Functions in SAPU for Robotic Insertion Task"""
+
     # Compute reward scale
-    reward_scale = 1 - torch.tanh(
-        max_interpen_dists[low_interpen_envs] / interpen_thresh
-    )
+    # 5. basic: 1-tanh
+    # reward_scale = 1 - torch.tanh(max_interpen_dists[low_interpen_envs] / interpen_thresh)
+    # 1. Exponetial decay Function
+    # reward_scale = torch.exp(-max_interpen_dists[low_interpen_envs] / interpen_thresh)
+    # 2. Reciprocal Function
+    # reward_scale = 1 / (1 + max_interpen_dists[low_interpen_envs] / interpen_thresh)
+    # 3. Reversed Logistic Function
+    reward_scale = 1 - 1 / (1 + torch.exp(2 * (max_interpen_dists[low_interpen_envs] / interpen_thresh - 0.5)))
+    # 4. Quadratic Function
+    # reward_scale = 1 - (0.2 * max_interpen_dists[low_interpen_envs] / interpen_thresh)**2
+
 
     return low_interpen_envs, high_interpen_envs, reward_scale
 

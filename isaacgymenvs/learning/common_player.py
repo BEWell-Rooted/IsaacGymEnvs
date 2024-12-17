@@ -133,6 +133,10 @@ class CommonPlayer(players.PpoPlayerContinuous):
                         if 'scores' in info:
                             print_game_res = True
                             game_res = info.get('scores', 0.5)
+                        #modified for to print insertion_successses
+                        if 'insertion_successes' in info:  # insertion_successes가 있으면 출력
+                            insertion_successes = info.get('insertion_successes', 0.0)
+                            print(f'insertion_successes: {insertion_successes:.2f}')
                     if self.print_stats:
                         if print_game_res:
                             print('reward:', cur_rewards/done_count, 'steps:', cur_steps/done_count, 'w:', game_res)

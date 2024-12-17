@@ -9,7 +9,7 @@ name: IndustRealTaskPegsInsert
 physics_engine: ${..physics_engine}
 
 env:
-    numEnvs: 128
+    numEnvs: 1
     numObservations: 24
     numStates: 47
     numActions: 6
