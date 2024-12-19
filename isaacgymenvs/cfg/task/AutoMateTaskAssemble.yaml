@@ -86,9 +86,9 @@ rl:
     engagement_bonus: 10.0  # bonus if plug is engaged (partially inserted) with socket
 
 ctrl:
-    ctrl_type: task_space_nullspace  # {gym_default,
+    ctrl_type: task_space_impedance  # {gym_default,
                                #  joint_space_ik, joint_space_id, 
-                               #  task_space_impedance, operational_space_motion, 
+                               #  task_space_nullspace, operational_space_motion, 
                                #  open_loop_force, closed_loop_force,
                                #  hybrid_force_motion}
     all:
