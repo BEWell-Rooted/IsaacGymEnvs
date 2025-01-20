@@ -10,6 +10,7 @@ physics_engine: ${..physics_engine}
 
 env:
     numEnvs: ${resolve_default:256,${...num_envs}}
+    #numEnvs: 100 #while test
     numObservations: 24
     numStates: 44
     numActions: 6
